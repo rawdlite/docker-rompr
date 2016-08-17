@@ -1,10 +1,10 @@
 FROM ubuntu:trusty
-MAINTAINER Fernando Mayo <fernando@tutum.co>, Feng Honglin <hfeng@tutum.co>
+MAINTAINER rawdlite@gmail.com
 
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-  apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php-apc php5-mcrypt && \
+  apt-get -y install supervisor curl apache2 libapache2-mod-php5 mysql-server php5-mysql php5-curl unzip imagemagick php5-json pwgen php-apc php5-mcrypt && \
   echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Add image configuration and scripts
@@ -21,20 +21,31 @@ RUN rm -rf /var/lib/mysql/*
 
 # Add MySQL utils
 ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
+ADD init_rompr_db.sh /init_rompr_db.sh
 RUN chmod 755 /*.sh
 
 # config to enable .htaccess
 ADD apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
+RUN a2enmod expires
+RUN a2enmod headers
+RUN a2enmod deflate
+RUN a2enmod php5
+
 # Configure /app folder with sample app
-RUN git clone https://github.com/fermayo/hello-world-lamp.git /app
+RUN curl -L -o rompr.zip http://sourceforge.net/projects/rompr/files/latest/download?source=files
 RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
-
+RUN unzip -d /app rompr.zip
+RUN chown -R www-data /app/rompr/prefs
+RUN chown -R www-data /app/rompr/albumart
 #Environment variables to configure php
-ENV PHP_UPLOAD_MAX_FILESIZE 10M
-ENV PHP_POST_MAX_SIZE 10M
-
+ENV PHP_UPLOAD_MAX_FILESIZE 32M
+ENV PHP_POST_MAX_SIZE 32M
+ENV PHP_REGISTER_GLOBALS Off
+ENV PHP_MEMORY_LIMIT 256M
+ENV PHP_MAX_EXECUTION_TIME  300
+RUN echo "<?php phpinfo(); ?>" > /app/rompr/phpinfo.php
 # Add volumes for MySQL 
 VOLUME  ["/etc/mysql", "/var/lib/mysql" ]
 

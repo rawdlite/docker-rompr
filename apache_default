@@ -1,17 +1,30 @@
+Alias /rompr /var/www/html/rompr
 <VirtualHost *:80>
         ServerAdmin webmaster@localhost
 
-        DocumentRoot /var/www/html
+        DocumentRoot /var/www/html/rompr
         <Directory />
                 Options FollowSymLinks
                 AllowOverride None
         </Directory>
-        <Directory /var/www/html>
-                Options Indexes FollowSymLinks MultiViews
-                # To make wordpress .htaccess work
-                AllowOverride FileInfo
-                Order allow,deny
-                allow from all
+        <Directory /var/www/html/rompr>
+		Options Indexes FollowSymLinks Includes ExecCGI
+		DirectoryIndex index.php
+		AllowOverride All
+		Require all granted
+		ErrorDocument 404 /rompr/404.php
+		AddType image/x-icon .ico
+		Satisfy Any
+        	Allow from all
+		<IfModule mod_php5.c>
+			AddType application/x-httpd-php .php
+			php_flag magic_quotes_gpc Off
+			php_flag track_vars On
+			php_flag register_globals Off
+			php_value include_path .
+			php_admin_value upload_tmp_dir /var/www/html/rompr/prefs
+			php_admin_value open_basedir none
+		</IfModule>
         </Directory>
 
         ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
@@ -36,3 +49,18 @@
 	SetEnvIf x-forwarded-proto https HTTPS=on
 
 </VirtualHost>
+
+<Directory /var/www/html/rompr/albumart/original>
+	Header Set Cache-Control "max-age=0, no-store"
+    	Header Set Cache-Control "no-cache, must-revalidate"
+</Directory>
+
+<Directory /var/www/html/rompr/albumart/small>
+    	Header Set Cache-Control "max-age=0, no-store"
+    	Header Set Cache-Control "no-cache, must-revalidate"
+</Directory>
+
+<Directory /var/www/html/rompr/albumart/asdownloaded>
+    	Header Set Cache-Control "max-age=0, no-store"
+    	Header Set Cache-Control "no-cache, must-revalidate"
+</Directory>
