@@ -1,12 +1,12 @@
 docker-rompr
 =================
 
-Out-of-the-box rompr image (rompr + MySQL)
+Out-of-the-box Rompr image (rompr + MySQL)
 
 Credit
 ------
 
-This work is based on a fork of tutumcloud/lamp
+This work is based on Rompr by fatg3rman and a fork of tutumcloud/lamp
 
 Usage
 -----
@@ -20,7 +20,7 @@ To create the image `rawdlite/docker-rompr`, execute the following command on th
 Running your ROMPR docker image
 ------------------------------
 
-Start your image binding the external ports 80 and 3306 in all interfaces to your container:
+Start your image binding the external ports 80 in all interfaces to your container:
 
 	docker run -d -p 80:80 rawdlite/docker-rompr
 
@@ -29,6 +29,17 @@ Open in your Browser:
 	http://localhost/
 
 Hello Rompr!
+
+Bind to another port
+--------------------
+
+In case you already have a webserver running under port 80 on your host you can bind an alternative port like 8080
+
+	docker run -d -p 8080:80 rawdlite/docker-rompr
+
+Open in your Browser:
+
+        http://localhost:8080
 
 Debug
 =====
