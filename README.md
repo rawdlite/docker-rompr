@@ -1,7 +1,7 @@
 docker-rompr
 =================
 
-Out-of-the-box rompr image (PHP+MySQL)
+Out-of-the-box rompr image (rompr + MySQL)
 
 Credit
 ------
@@ -22,29 +22,46 @@ Running your ROMPR docker image
 
 Start your image binding the external ports 80 and 3306 in all interfaces to your container:
 
-	docker run -d -p 80:80 -p 3306:3306 rawdlite/docker-rompr
+	docker run -d -p 80:80 rawdlite/docker-rompr
 
-Test your deployment:
+Open in your Browser:
 
-	curl http://localhost/
+	http://localhost/
 
-Hello world!
+Hello Rompr!
+
+Debug
+=====
+
+Check php variables:
+
+       http://localhost/phpinfo.php
+
+Entering the container
+----------------------
+
+Get the container name or id
+
+	docker ps
+
+run a shell in the container
+
+	docker exec -it <name or id> /bin/bash
 
 
 Connecting to the bundled MySQL server from within the container
 ----------------------------------------------------------------
 
 The bundled MySQL server has a `root` user with no password for local connections.
-Simply connect from your PHP code with this user:
+You can enter the database as root:
 
-	<?php
-	$mysql = new mysqli("localhost", "root");
-	echo "MySQL Server info: ".$mysql->host_info;
-	?>
-
+	mysql
 
 Connecting to the bundled MySQL server from outside the container
 -----------------------------------------------------------------
+To expose the mysql port run the container as.
+
+	docker run -d -p 80:80 -p 3306:3306 rawdlite/docker-rompr
 
 The first time that you run your container, a new user `admin` with all privileges
 will be created in MySQL with a random password. To get the password, check the logs
@@ -67,7 +84,7 @@ In this case, `47nnf4FweaKu` is the password allocated to the `admin` user.
 
 You can then connect to MySQL:
 
-	 mysql -uadmin -p47nnf4FweaKu
+	 mysql -uadmin -p47nnf4FweaKu -h 127.0.0.1
 
 Remember that the `root` user does not allow connections from outside the container -
 you should use this `admin` user instead!
@@ -83,15 +100,6 @@ set the environment variable `MYSQL_PASS` to your specific password when running
 
 You can now test your new admin password:
 
-	mysql -uadmin -p"mypass"
+	mysql -uadmin -p"mypass" -h 127.0.0.1
 
-
-Disabling .htaccess
---------------------
-
-`.htaccess` is enabled by default. To disable `.htaccess`, you can remove the following contents from `Dockerfile`
-
-	# config to enable .htaccess
-    ADD apache_default /etc/apache2/sites-available/000-default.conf
-    RUN a2enmod rewrite
 
