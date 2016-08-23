@@ -1,4 +1,5 @@
-FROM ubuntu:trusty
+#FROM ubuntu:trusty
+FROM ioft/armhf-ubuntu
 MAINTAINER rawdlite@gmail.com
 
 # Install packages
