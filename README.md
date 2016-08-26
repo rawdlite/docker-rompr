@@ -16,19 +16,22 @@ To create the image `rawdlite/docker-rompr`, execute the following command on th
 	docker build -t rawdlite/docker-rompr .
 
 
-
 Running your ROMPR docker image
 ------------------------------
 
 Start your image binding the external ports 80 in all interfaces to your container:
 
-	docker run -d -p 80:80 rawdlite/docker-rompr
+	docker run -d -p 80:80 --name rompr rawdlite/docker-rompr
 
 Open in your Browser:
 
 	http://localhost/
 
 Hello Rompr!
+
+When you see the rompr setup screen insert your hosts IP (default localhost does not work even if you run mopidy / mpd on the same host)
+Select 'Full Database Collection'.
+Hit 'OK'
 
 Bind to another port
 --------------------
@@ -57,7 +60,7 @@ Get the container name or id
 
 run a shell in the container
 
-	docker exec -it <name or id> /bin/bash
+	docker exec -it rompr /bin/bash
 
 
 Connecting to the bundled MySQL server from within the container
@@ -70,35 +73,13 @@ You can enter the database as root:
 
 Connecting to the bundled MySQL server from outside the container
 -----------------------------------------------------------------
+
 To expose the mysql port run the container as.
 
 	docker run -d -p 80:80 -p 3306:3306 rawdlite/docker-rompr
 
-The first time that you run your container, a new user `admin` with all privileges
-will be created in MySQL with a random password. To get the password, check the logs
-of the container by running:
-
-	docker logs $CONTAINER_ID
-
-You will see an output like the following:
-
-	========================================================================
-	You can now connect to this MySQL Server using:
-
-	    mysql -uadmin -p47nnf4FweaKu -h<host> -P<port>
-
-	Please remember to change the above password as soon as possible!
-	MySQL user 'root' has no password but only allows local connections
-	========================================================================
-
-In this case, `47nnf4FweaKu` is the password allocated to the `admin` user.
-
-You can then connect to MySQL:
-
-	 mysql -uadmin -p47nnf4FweaKu -h 127.0.0.1
-
 Remember that the `root` user does not allow connections from outside the container -
-you should use this `admin` user instead!
+you should use the `admin` user instead!
 
 
 Setting a specific password for the MySQL server admin account
