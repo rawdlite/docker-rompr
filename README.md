@@ -11,6 +11,12 @@ This work is based on Rompr by fatg3rman and a fork of tutumcloud/lamp
 Usage
 -----
 
+	docker run -d -p 80:80 --name rompr rawdlite/rompr
+
+
+Build
+_____
+
 To create the image `rawdlite/docker-rompr`, execute the following command on the docker-rompr folder:
 
 	docker build -t rawdlite/docker-rompr .
