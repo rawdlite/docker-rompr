@@ -1,3 +1,3 @@
 all:
-	cat baseimage.x86 Dockerfile > ../Dockerfile.x86
+	cat baseimage.x86 Dockerfile > ../Dockerfile
 	cat baseimage.armhf Dockerfile > ../Dockerfile.armhf
