@@ -2,6 +2,7 @@ docker-rompr
 =================
 
 Out-of-the-box Rompr image (rompr + MySQL)
+[![](https://images.microbadger.com/badges/image/rawdlite/rompr.svg)](https://microbadger.com/images/rawdlite/rompr "Get your own image badge on microbadger.com")
 
 Credit
 ------
