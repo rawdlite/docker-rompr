@@ -1,5 +1,5 @@
-FROM dustinsoftware/rpi-percona
+FROM tobi312/rpi-mysql
 MAINTAINER rawdlite@gmail.com
 ADD my.cnf /etc/my.cnf 
-ADD init_rompr_db.sh /docker-entrypoint-initdb.d/init_rompr_db.sh
+ADD init_rompr_db-5.sh /docker-entrypoint-initdb.d/init_rompr_db.sh
 RUN chmod u+x /docker-entrypoint-initdb.d/init_rompr_db.sh
