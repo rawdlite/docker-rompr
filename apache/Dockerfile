@@ -23,7 +23,7 @@ ADD apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 RUN a2enmod expires
 RUN a2enmod headers
-RUN curl -L -o rompr.zip https://github.com/fatg3erman/RompR/releases/download/1.21/rompr-1.21.zip
+RUN curl -L -o rompr.zip https://github.com/fatg3erman/RompR/releases/download/1.22/rompr-1.22.zip
 RUN mkdir -p /app
 RUN unzip -d /app rompr.zip
 RUN mkdir /app/rompr/prefs
