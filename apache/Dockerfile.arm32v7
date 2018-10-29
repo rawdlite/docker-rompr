@@ -1,31 +1,31 @@
-FROM arm32v7/ubuntu
+FROM arm32v7/debian:stretch-slim
 MAINTAINER rawdlite@gmail.com
 
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && \
-  apt-get -y install \
-      curl \
-      libapache2-mod-php \
-      php-mysql \
-      php-curl \
-      php-gd \
-      unzip \
-      imagemagick \
-      php-json \
-      php-xml \ 
-      php-mbstring \
-      php-sqlite3 
-RUN echo "ServerName localhost" >> /etc/apache2/apache.conf
-
+RUN apt-get update \
+    && apt-get -yq install \
+        curl \
+        libapache2-mod-php \
+        php-mysql \
+        php-curl \
+        php-gd \
+        unzip \
+        imagemagick \
+        php-json \
+        php-xml \
+        php-mbstring \
+        php-sqlite3 \
+    && rm -rf /var/lib/apt/lists/*  /usr/share/doc/* /usr/share/doc-base/*
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 ADD apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 RUN a2enmod expires
 RUN a2enmod headers
-RUN curl -L -o rompr.zip https://github.com/fatg3erman/RompR/releases/download/1.21/rompr-1.21.zip
+RUN curl -L -o rompr.zip https://github.com/fatg3erman/RompR/releases/download/1.22/rompr-1.22.zip
 RUN mkdir -p /app
-RUN unzip -d /app rompr.zip
+RUN unzip -d /app rompr.zip && rm rompr.zip
 RUN mkdir /app/rompr/prefs
 RUN mkdir /app/rompr/albumart
 RUN chown -R www-data:www-data /app/rompr
