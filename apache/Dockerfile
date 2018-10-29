@@ -16,8 +16,7 @@ RUN apt-get update && \
       php-xml \ 
       php-mbstring \
       php-sqlite3 
-RUN echo "ServerName localhost" >> /etc/apache2/apache./conf
-
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 ADD apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
