@@ -1,4 +1,4 @@
-FROM mysql/mysql-server:latest
+FROM linuxserver/mariadb
 MAINTAINER rawdlite@gmail.com
 ADD my.cnf /etc/my.cnf 
 ADD init_rompr_db.sh /docker-entrypoint-initdb.d/init_rompr_db.sh
