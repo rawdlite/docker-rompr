@@ -15,7 +15,8 @@ RUN apt-get update && \
       php-json \
       php-xml \ 
       php-mbstring \
-      php-sqlite3 
+      php-sqlite3 \
+  && rm -rf /var/lib/apt/lists/*  /usr/share/doc/* /usr/share/doc-base/*
 RUN echo "ServerName localhost" >> /etc/apache2/apache.conf
 
 
@@ -23,9 +24,9 @@ ADD apache_default /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 RUN a2enmod expires
 RUN a2enmod headers
-RUN curl -L -o rompr.zip https://github.com/fatg3erman/RompR/releases/download/1.32/rompr-1.32.zip
+RUN curl -k -L -o rompr.zip https://github.com/fatg3erman/RompR/releases/download/1.32/rompr-1.32.zip
 RUN mkdir -p /app
-RUN unzip -d /app rompr.zip
+RUN unzip -d /app rompr.zip && rm rompr.zip
 RUN mkdir /app/rompr/prefs
 RUN mkdir /app/rompr/albumart
 RUN chown -R www-data:www-data /app/rompr

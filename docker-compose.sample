@@ -13,12 +13,19 @@ services:
       - ~/.config/:/root/.config/
       - /data/music/:/data/music/
   mysql:
-    image: rawdlite/rompr_db
-    restart: always
+    image: linuxserver/mariadb
+    restart: unless-stopped
     container_name: mysql
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_ROMPR_PASS=R9nM773tYJtcLv
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=b4FUk4mF>3As3aA
+      - TZ=Europe/Berlin
+      - MYSQL_DATABASE=romprdb
+      - MYSQL_USER=rompr
+      - MYSQL_PASSWORD==R9nM773tYJtcLv
+    volumes:
+      - /home/dietpi/db_config:/config
     ports:
       - "3306:3306"
   rompr:
