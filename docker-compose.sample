@@ -1,0 +1,29 @@
+version: "3"
+services:
+  mopidy:
+    image: rawdlite/mopidy
+    container_name: mopidy
+    devices:
+      - "/dev/snd"
+    ports:
+      - "6600:6600"
+      - "6680:6680"
+    restart: always
+    volumes:
+      - ~/.config/:/root/.config/
+      - /data/music/:/data/music/
+  mysql:
+    image: rawdlite/rompr_db
+    restart: always
+    container_name: mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_ROMPR_PASS=R9nM773tYJtcLv
+    ports:
+      - "3306:3306"
+  rompr:
+    image: rawdlite/rompr_apache:latest
+    container_name: rompr
+    restart: always
+    ports:
+      - "80:80"
