@@ -24,6 +24,8 @@ RUN mkdir -p /app
 RUN unzip -d /app rompr.zip && rm rompr.zip
 RUN mkdir /app/rompr/prefs
 RUN mkdir /app/rompr/albumart
+COPY rompr-1.33/vars.php /app/rompr/includes/vars.php
+COPY rompr-1.33/player.php /app/rompr/player/mopidy/player.php
 RUN chown -R www-data:www-data /app/rompr
 COPY nginx_default /etc/nginx/sites-available/default
 RUN mkdir -p /run/php/
