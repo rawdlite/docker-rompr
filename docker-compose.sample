@@ -23,13 +23,13 @@ services:
       - TZ=Europe/Berlin
       - MYSQL_DATABASE=romprdb
       - MYSQL_USER=rompr
-      - MYSQL_PASSWORD==R9nM773tYJtcLv
+      - MYSQL_PASSWORD==romprdbpass
     volumes:
       - /home/dietpi/db_config:/config
     ports:
       - "3306:3306"
   rompr:
-    image: rawdlite/rompr_apache:latest
+    image: rawdlite/rompr:latest
     container_name: rompr
     restart: always
     ports:
