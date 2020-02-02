@@ -4,7 +4,8 @@ docker-rompr
 
 Docker Container to run a Rompr (https://fatg3erman.github.io/RompR/) instance.
 
-The Image is a multi-platform build for armv7 (Raspberry Pi, Odroid etc.) and x86 achitecture (amd64)
+The Image is a multi-platform build for armv7 (Raspberry Pi, Odroid etc.) and x86 achitecture (amd64).
+The Image uses now debian:buster-slim and nginx.
 
 Credit
 ------

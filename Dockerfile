@@ -1,12 +1,14 @@
-FROM ubuntu:19.10
+FROM debian:buster-slim
 MAINTAINER rawdlite@gmail.com
 
+ARG ROMPR_VERSION=1.33
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
   apt-get -y install \
+      nginx \
+      php-fpm \
       curl \
-      libapache2-mod-php \
       php-mysql \
       php-curl \
       php-gd \
@@ -15,34 +17,30 @@ RUN apt-get update && \
       php-json \
       php-xml \ 
       php-mbstring \
-      php-sqlite3 \
-  && rm -rf /var/lib/apt/lists/*  /usr/share/doc/* /usr/share/doc-base/*
-RUN echo "ServerName localhost" >> /etc/apache2/apache.conf
+      php-sqlite3 
 
-
-ADD apache_default /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
-RUN a2enmod expires
-RUN a2enmod headers
-RUN curl -k -L -o rompr.zip https://github.com/fatg3erman/RompR/releases/download/1.32/rompr-1.32.zip
+RUN curl -k -L -o rompr.zip https://github.com/fatg3erman/RompR/releases/download/${ROMPR_VERSION}/rompr-${ROMPR_VERSION}.zip
 RUN mkdir -p /app
 RUN unzip -d /app rompr.zip && rm rompr.zip
 RUN mkdir /app/rompr/prefs
 RUN mkdir /app/rompr/albumart
 RUN chown -R www-data:www-data /app/rompr
-ENV APACHE_DOCUMENT_ROOT /app/rompr
-
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+COPY nginx_default /etc/nginx/sites-available/default
+RUN mkdir -p /run/php/
 #Environment variables to configure php
-ENV PHP_UPLOAD_MAX_FILESIZE 32M
-ENV PHP_POST_MAX_SIZE 32M
-ENV PHP_REGISTER_GLOBALS Off
-ENV PHP_MEMORY_LIMIT 256M
-ENV PHP_MAX_EXECUTION_TIME  300
-RUN echo "<?php phpinfo(); ?>" > /app/rompr/phpinfo.php
+RUN sed -ri -e  's/^allow_url_fopen =.*/allow_url_fopen = On/g' /etc/php/7.3/fpm/php.ini
+RUN sed -ri -e  's/^memory_limit =.*/memory_limit = 128M/g' /etc/php/7.3/fpm/php.ini
+RUN sed -ri -e  's/^max_execution_time =.*/max_execution_time = 1800/g' /etc/php/7.3/fpm/php.ini
+RUN sed -ri -e  's/^post_max_size =.*/post_max_size = 256M/g' /etc/php/7.3/fpm/php.ini
+RUN sed -ri -e  's/^upload_max_filesize =.*/upload_max_filesize = 8M/g' /etc/php/7.3/fpm/php.ini
+RUN sed -ri -e  's/^max_file_uploads =.*/max_file_uploads = 50/g' /etc/php/7.3/fpm/php.ini
+RUN sed -ri -e  's/^display_errors =.*/display_errors = On/g' /etc/php/7.3/fpm/php.ini
+RUN sed -ri -e  's/^display_startup_errors =.*/display_startup_errors = On/g' /etc/php/7.3/fpm/php.ini
 
-COPY httpd-foreground /usr/local/bin/
-RUN chmod 755 /usr/local/bin/httpd-foreground
+RUN echo "<?php phpinfo(); ?>" > /app/rompr/phpinfo.php
+RUN update-rc.d php7.3-fpm defaults
+COPY run-httpd /usr/local/bin/
+RUN chmod 755 /usr/local/bin/run-httpd
 EXPOSE 80
-CMD ["httpd-foreground"]
+CMD ["/usr/local/bin/run-httpd"]
 
