@@ -4,7 +4,8 @@ docker-rompr
 
 Docker Container to run a Rompr (https://fatg3erman.github.io/RompR/) instance.
 
-The Image is a multi-platform build for armv7 (Raspberry Pi, Odroid etc.) and x86 achitecture (amd64)
+The Image is a multi-platform build for armv7 (Raspberry Pi, Odroid etc.) and x86 achitecture (amd64).
+The Image uses now debian:buster-slim and nginx.
 
 Credit
 ------
@@ -50,7 +51,7 @@ create a docker-compose.yml like so:
               - TZ=Europe/Berlin
               - MYSQL_DATABASE=romprdb
               - MYSQL_USER=rompr
-              - MYSQL_PASSWORD=R9nM773tYJtcLv
+              - MYSQL_PASSWORD=romprdbpass
             volumes:
               - ./db_config:/config
             ports:
@@ -64,8 +65,8 @@ create a docker-compose.yml like so:
 
 
 
-You need to update the volume pathes to reflect your system.
-then run
+You need to change at least the volume pathes to reflect your system.
+then run:
 
 	docker-compose up -d
 
@@ -110,7 +111,7 @@ Open rompr in your Browser:
 
 Hello Rompr!
 
-When you see the rompr setup screen 
+When you see the rompr setup screen
 
 	Mopidy or mpd Server: mopidy
 	Port: 6600
@@ -121,8 +122,8 @@ for rompr_db container:
 	Port: 3360
 	Database: romprdb
 	Username: rompr
-        Password: <MYSQL_PASSWORD>
-	
+  Password: <MYSQL_PASSWORD>
+
 Use Password from from docker-compose.yml.
 
 Select 'Full Database Collection'.
@@ -138,7 +139,7 @@ run:
         ip addr
 
 Find an entry like:
-	
+
 	docker0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
     	inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
 
@@ -183,4 +184,3 @@ Get the container name or id
 run a shell in the container
 
 	docker exec -it rompr /bin/bash
-
