@@ -1,0 +1,1 @@
+docker buildx build --platform linux/amd64,linux/arm/v7 --push -t diskstation:5555/rawdlite/rompr:development .
