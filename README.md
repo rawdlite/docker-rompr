@@ -28,7 +28,7 @@ The easiest way to get a rompr instance running is:
 
 Usage docker-compose
 ---------------------------------
-You cancreate a docker-compose.yml like so:
+You can create a docker-compose.yml like so:
 
 
 	version: "3"
