@@ -28,9 +28,7 @@ The easiest way to get a rompr instance running is:
 
 Usage docker-compose
 ---------------------------------
-With docker-compose you you can set up a set of containers and a network that connects them.
-For a full installation of mopidy, rompr and a full rompr datatabase (mysql)
-create a docker-compose.yml like so:
+You cancreate a docker-compose.yml like so:
 
 
 	version: "3"
@@ -45,6 +43,8 @@ create a docker-compose.yml like so:
 Then run the following command in the directory of the docker-compose.yml file:
 
     docker-compose up -d
+
+For a full installation of mopidy, rompr and a full rompr datatabase (mysql) look at the docker-compose.with_mopidfy_and_mysql file
 
 Configuring ROMPR instance
 ------------------------------
