@@ -1,0 +1,11 @@
+version: "3"
+services:
+  rompr:
+    image: local/rompr
+    container_name: rompr
+    restart: unless-stopped
+    ports:
+      - 80:80
+#    volumes:
+#      - /srv/app/rompr/albumart:/app/rompr/albumart
+#      - /srv/app/rompr/pref:/app/rompr/prefs
