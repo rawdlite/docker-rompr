@@ -14,7 +14,7 @@ NOTE:
 
 I no longer maintain images on dockerhub as i moved to Lyrion (https://sites.google.com/view/theaudioniche/lms) for its stable Qobuz intergration.
 There seems to be an image chrll/rompr available on dockerhub that uses this code.
-Alterantively you can build a local image with the build.local script.
+Alternatively you can build a local image with the build.local script.
 
     docker build --build-arg ROMPR_VERSION=2.15 -t local/rompr .
 
